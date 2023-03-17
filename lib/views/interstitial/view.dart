@@ -7,7 +7,6 @@ class InterstitialView
 
   @override
   Widget build(BuildContext context) {
-    controller._interstitialAd?.show();
     return Container();
   }
 }

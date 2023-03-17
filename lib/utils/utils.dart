@@ -5,4 +5,5 @@ export '../models/models.dart';
 export '../services/services.dart';
 export 'global_variables.dart';
 export 'mvc/mvc.dart';
-export 'packages.dart';
+export 'extensions.dart';
+export 'packages.dart' hide DrawerController;

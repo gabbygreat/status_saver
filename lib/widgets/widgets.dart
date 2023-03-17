@@ -1,1 +1,1 @@
-// export 'custom_divider.dart';
+export 'animated_switch.dart';

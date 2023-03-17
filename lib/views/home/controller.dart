@@ -2,14 +2,31 @@ import '../../utils/utils.dart';
 
 part 'view.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => HomeController();
+  ConsumerState<HomeScreen> createState() => HomeController();
 }
 
-class HomeController extends State<HomeScreen> {
+class HomeController extends ConsumerState<HomeScreen> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future getPath() async {
+    if (await Permission.storage.request().isGranted &&
+        await Permission.accessMediaLocation.request().isGranted &&
+        await Permission.manageExternalStorage.request().isGranted) {
+      // some useful code
+    } else {
+      print("No Permission Granted");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return HomeView(this);
