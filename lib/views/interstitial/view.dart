@@ -7,6 +7,6 @@ class InterstitialView
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return widget.child;
   }
 }

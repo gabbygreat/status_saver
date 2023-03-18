@@ -7,3 +7,7 @@ final themeProvider = StateNotifierProvider<ThemeNotifier, bool>(
 final statusMediaProvider = FutureProvider.family<List<FileModel>, FolderModel>(
   (ref, FolderModel folderModel) => StatusServices.getTabContent(folderModel),
 );
+
+final imageFromVideoProvider = FutureProvider.family(
+  (ref, String filePath) => getImageFromVideo(filePath),
+);

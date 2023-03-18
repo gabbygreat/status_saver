@@ -11,12 +11,15 @@ class FolderModel {
     required this.folderMain,
   });
 }
+
 class FileModel {
   final String filePath;
   final String fileType;
+  final DateTime fileDate;
 
   FileModel({
     required this.filePath,
     required this.fileType,
+    required this.fileDate,
   });
 }

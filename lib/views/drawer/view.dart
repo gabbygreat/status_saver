@@ -92,11 +92,26 @@ class DrawerView extends StatelessView<DrawerScreen, DrawerController> {
                   leading: Icon(
                     Platform.isAndroid ? Icons.android : Icons.apple,
                   ),
+                  onTap: () => launchUrlString(
+                    'https://play.google.com/store/apps/details?id=com.pycify.igboapp',
+                  ),
                 ),
                 ListTile(
                   title: const Text('Igbo Calendar'),
                   leading: Icon(
                     Platform.isAndroid ? Icons.android : Icons.apple,
+                  ),
+                  onTap: () => launchUrlString(
+                    'https://play.google.com/store/apps/details?id=com.pycify.calendar',
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Math Quiz'),
+                  leading: Icon(
+                    Platform.isAndroid ? Icons.android : Icons.apple,
+                  ),
+                  onTap: () => launchUrlString(
+                    'https://play.google.com/store/apps/details?id=com.pycify.math_quiz',
                   ),
                 ),
               ],

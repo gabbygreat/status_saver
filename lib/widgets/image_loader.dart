@@ -46,9 +46,11 @@ class _ImageLoaderState extends State<ImageLoader>
   Future<void> onTap() async {
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => DisplayScreen(
-          fileModel: widget.allFiles,
-          initialPage: widget.allFiles.indexOf(widget.fileModel),
+        builder: (context) => InterstitialScreen(
+          child: DisplayScreen(
+            fileModel: widget.allFiles,
+            initialPage: widget.allFiles.indexOf(widget.fileModel),
+          ),
         ),
       ),
     );
@@ -88,7 +90,7 @@ class _ImageLoaderState extends State<ImageLoader>
                     onTap: () => onTap(),
                     child: ExtendedRawImage(
                       image: state.extendedImageInfo?.image,
-                      fit: widget.boxFit,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -111,78 +113,100 @@ class _ImageLoaderState extends State<ImageLoader>
         },
       );
     } else {
-      return FutureBuilder(
-          future: getImageFromVideo(widget.fileModel.filePath),
-          builder: (context, AsyncSnapshot<Uint8List> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center();
-            } else {
-              return ExtendedImage.memory(
-                snapshot.data!,
-                imageCacheName: widget.fileModel.filePath,
-                fit: BoxFit.fill,
-                width: double.infinity,
-                borderRadius: BorderRadius.circular(8),
-                loadStateChanged: (ExtendedImageState state) {
-                  switch (state.extendedImageLoadState) {
-                    case LoadState.loading:
-                      _controller.reset();
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Shimmer.fromColors(
-                          baseColor: primaryColor.withOpacity(0.3),
-                          highlightColor: secondaryColor.withOpacity(0.2),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Text('load'),
-                          ),
+      return Consumer(
+        builder: (context, ref, _) {
+          final image =
+              ref.watch(imageFromVideoProvider(widget.fileModel.filePath));
+          return image.when(
+            data: (vlaue) => ExtendedImage.memory(
+              vlaue,
+              imageCacheName: widget.fileModel.filePath,
+              fit: BoxFit.contain,
+              width: double.infinity,
+              borderRadius: BorderRadius.circular(8),
+              loadStateChanged: (ExtendedImageState state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.loading:
+                    _controller.reset();
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Shimmer.fromColors(
+                        baseColor: primaryColor.withOpacity(0.3),
+                        highlightColor: secondaryColor.withOpacity(0.2),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text('status saver'),
                         ),
-                      );
-                    case LoadState.completed:
-                      _controller.forward();
-                      return FadeTransition(
-                        opacity: _animation,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(3),
-                          child: GestureDetector(
-                            onTap: () => onTap(),
-                            child: Stack(
-                              children: [
-                                ExtendedRawImage(
+                      ),
+                    );
+                  case LoadState.completed:
+                    _controller.forward();
+                    return FadeTransition(
+                      opacity: _animation,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(3),
+                        child: GestureDetector(
+                          onTap: () => onTap(),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: ExtendedRawImage(
                                   image: state.extendedImageInfo?.image,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fitWidth,
                                 ),
-                                const Center(
-                                  child: Icon(
-                                    Icons.play_arrow,
-                                    color: Colors.white,
-                                    size: 100,
-                                  ),
-                                )
-                              ],
-                            ),
+                              ),
+                              const Center(
+                                child: Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 100,
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      );
-                    case LoadState.failed:
-                      _controller.reset();
-                      return GestureDetector(
-                        child: Center(
-                          child: Icon(
-                            Icons.replay_outlined,
-                            color: secondaryColor,
-                            size: 60,
-                          ),
+                      ),
+                    );
+                  case LoadState.failed:
+                    _controller.reset();
+                    return GestureDetector(
+                      child: Center(
+                        child: Icon(
+                          Icons.replay_outlined,
+                          color: secondaryColor,
+                          size: 60,
                         ),
-                        onTap: () {
-                          state.reLoadImage();
-                        },
-                      );
-                  }
-                },
-              );
-            }
-          });
+                      ),
+                      onTap: () {
+                        state.reLoadImage();
+                      },
+                    );
+                }
+              },
+            ),
+            error: (error, trace) => Center(
+              child: Shimmer.fromColors(
+                baseColor: primaryColor.withOpacity(0.3),
+                highlightColor: secondaryColor.withOpacity(0.2),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text('status saver'),
+                ),
+              ),
+            ),
+            loading: () => Center(
+              child: Shimmer.fromColors(
+                baseColor: primaryColor.withOpacity(0.3),
+                highlightColor: secondaryColor.withOpacity(0.2),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text('status saver'),
+                ),
+              ),
+            ),
+          );
+        },
+      );
     }
   }
 }

@@ -29,6 +29,7 @@ class StatusServices {
       return FileModel(
         filePath: e.path,
         fileType: lookupMimeType(e.path)!.split('/')[0],
+        fileDate: e.statSync().modified,
       );
     }).toList();
   }

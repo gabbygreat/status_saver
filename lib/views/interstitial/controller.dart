@@ -3,7 +3,8 @@ import '../../utils/utils.dart';
 part 'view.dart';
 
 class InterstitialScreen extends ConsumerStatefulWidget {
-  const InterstitialScreen({Key? key}) : super(key: key);
+  final Widget child;
+  const InterstitialScreen({Key? key, required this.child}) : super(key: key);
 
   @override
   ConsumerState<InterstitialScreen> createState() => InterstitialController();
@@ -55,7 +56,6 @@ class InterstitialController extends ConsumerState<InterstitialScreen> {
   @override
   Widget build(BuildContext context) {
     // StatusServices.getTabContent(widget.position);
-    loadAd();
     return InterstitialView(this);
   }
 }

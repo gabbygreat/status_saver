@@ -8,41 +8,23 @@ class DisplayView extends StatelessView<DisplayScreen, DisplayController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Image'),
+        title: const Text('Status Saver'),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      backgroundColor: Colors.black,
+      floatingActionButton: FoldableOptions(
+        fileModel: widget.fileModel[controller.position],
       ),
       body: PageView.builder(
         controller: controller.pageController,
+        onPageChanged: (value) => controller.refresh(value),
         itemBuilder: (context, index) =>
             widget.fileModel[index].fileType == 'image'
                 ? Image.file(
                     File(widget.fileModel[index].filePath),
-                    fit: BoxFit.fill,
                   )
-                : FutureBuilder(
-                    future: getImageFromVideo(widget.fileModel[index].filePath),
-                    builder: (context, AsyncSnapshot<Uint8List> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center();
-                      } else {
-                        return Stack(
-                          children: [
-                            Positioned.fill(
-                              child: Image.memory(
-                                snapshot.data!,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const Center(
-                              child: Icon(
-                                Icons.play_arrow,
-                                color: Colors.white,
-                                size: 100,
-                              ),
-                            )
-                          ],
-                        );
-                      }
-                    },
+                : VideoManager(
+                    file: widget.fileModel[index].filePath,
                   ),
       ),
     );

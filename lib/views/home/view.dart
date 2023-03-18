@@ -9,7 +9,28 @@ class HomeView extends StatelessView<HomeScreen, HomeController> {
       future: StatusServices.getTabNames(),
       builder: (context, AsyncSnapshot<List<FolderModel>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text('data');
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(
+                'Status Saver',
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              actions: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.share,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.help_outline,
+                  ),
+                ),
+              ],
+            ),
+          );
         } else {
           return DefaultTabController(
             length: snapshot.data!.length,

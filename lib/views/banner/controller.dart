@@ -24,25 +24,37 @@ class BannerController extends ConsumerState<BannerScreen> {
       adUnitId: AdMobService.bannerAdUnitId,
       listener: const BannerAdListener(),
       request: const AdRequest(),
-    )..load();
-  }
-
-  void preloadImage(String fileName) async {
-    await precacheImage(ExtendedFileImageProvider(File(fileName)), context);
+    );
+    if (_banner != null) {
+      _banner!.load();
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    request();
+  }
+
+  void request() async {
+    await requestPermission().then(
+      (value) async {
+        if (value) {
+          return await ref.refresh(
+            statusMediaProvider(widget.folderModel).future,
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
     _createBannerAd();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(statusMediaProvider(widget.folderModel).future).then((value) =>
-          value
-              .where((element) => element.fileType == 'image')
-              .forEach((element) {
-            preloadImage(element.filePath);
-          }));
-    });
+    return await ref.refresh(
+      statusMediaProvider(widget.folderModel).future,
+    );
   }
 
   @override

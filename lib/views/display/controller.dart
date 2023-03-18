@@ -17,10 +17,18 @@ class DisplayScreen extends StatefulWidget {
 
 class DisplayController extends State<DisplayScreen> {
   late PageController pageController;
+  late int position;
+
+  void refresh(int value) {
+    setState(() {
+      position = value;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    position = widget.initialPage;
     pageController = PageController(initialPage: widget.initialPage);
   }
 

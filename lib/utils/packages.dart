@@ -13,3 +13,4 @@ export 'package:mime/mime.dart';
 export 'package:extended_image/extended_image.dart';
 export 'package:shimmer/shimmer.dart';
 export 'package:video_thumbnail/video_thumbnail.dart';
+export 'package:url_launcher/url_launcher_string.dart';

@@ -12,21 +12,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class HomeController extends ConsumerState<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Future getPath() async {
-    if (await Permission.storage.request().isGranted &&
-        await Permission.accessMediaLocation.request().isGranted &&
-        await Permission.manageExternalStorage.request().isGranted) {
-      // some useful code
-    } else {
-      debugPrint("No Permission Granted");
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return HomeView(this);
