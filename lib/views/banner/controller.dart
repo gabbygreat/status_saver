@@ -2,14 +2,21 @@ import '../../utils/utils.dart';
 
 part 'view.dart';
 
-class BannerScreen extends StatefulWidget {
-  const BannerScreen({Key? key}) : super(key: key);
-
+class BannerScreen extends ConsumerStatefulWidget {
+  final String tabName;
+  final FolderModel folderModel;
+  final int position;
+  const BannerScreen({
+    Key? key,
+    required this.tabName,
+    required this.position,
+    required this.folderModel,
+  }) : super(key: key);
   @override
-  State<BannerScreen> createState() => BannerController();
+  ConsumerState<BannerScreen> createState() => BannerController();
 }
 
-class BannerController extends State<BannerScreen> {
+class BannerController extends ConsumerState<BannerScreen> {
   BannerAd? _banner;
   _createBannerAd() {
     _banner = BannerAd(
@@ -20,10 +27,22 @@ class BannerController extends State<BannerScreen> {
     )..load();
   }
 
+  void preloadImage(String fileName) async {
+    await precacheImage(ExtendedFileImageProvider(File(fileName)), context);
+  }
+
   @override
   void initState() {
     super.initState();
     _createBannerAd();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(statusMediaProvider(widget.folderModel).future).then((value) =>
+          value
+              .where((element) => element.fileType == 'image')
+              .forEach((element) {
+            preloadImage(element.filePath);
+          }));
+    });
   }
 
   @override

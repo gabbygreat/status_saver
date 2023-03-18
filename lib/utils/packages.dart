@@ -10,3 +10,6 @@ export 'package:permission_handler/permission_handler.dart';
 export 'package:path_provider/path_provider.dart';
 export 'package:external_path/external_path.dart';
 export 'package:mime/mime.dart';
+export 'package:extended_image/extended_image.dart';
+export 'package:shimmer/shimmer.dart';
+export 'package:video_thumbnail/video_thumbnail.dart';

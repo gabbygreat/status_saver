@@ -1,5 +1,3 @@
-import 'package:status_saver/riverpod/provider.dart';
-import 'package:status_saver/views/settings/controller.dart';
 
 import '../../utils/utils.dart';
 

@@ -3,7 +3,7 @@ import 'package:status_saver/utils/utils.dart';
 class AdMobService {
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3940256099942544/6300978111';
+      return 'ca-app-pub-4646509825054836/1258584037';
     } else {
       return 'ca-app-pub-3940256099942544/2934735716';
     }

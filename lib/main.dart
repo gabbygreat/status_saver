@@ -1,5 +1,3 @@
-import 'package:status_saver/riverpod/provider.dart';
-
 import 'utils/utils.dart';
 
 void main() {

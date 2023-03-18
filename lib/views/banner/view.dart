@@ -5,15 +5,46 @@ class BannerView extends StatelessView<BannerScreen, BannerController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+    final statusMedia = controller.ref.watch(
+      statusMediaProvider(widget.folderModel),
+    );
+
+    return Stack(
       children: [
+        Positioned.fill(
+          child: statusMedia.when(
+            data: (data) => RefreshIndicator(
+              onRefresh: () async => await controller.ref.refresh(
+                statusMediaProvider(widget.folderModel).future,
+              ),
+              child: GridView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: data.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3, mainAxisSpacing: 5),
+                itemBuilder: (context, index) => ImageLoader(
+                  fileModel: data[index],
+                  allFiles: data,
+                ),
+              ),
+            ),
+            loading: () => const SizedBox(
+              height: 40,
+              width: 40,
+              child: CircularProgressIndicator(),
+            ),
+            error: (error, stackTrace) => const Text('ERROR'),
+          ),
+        ),
         if (controller._banner != null)
-          SizedBox(
-            height: controller._banner!.size.height.toDouble(),
-            width: controller._banner!.size.width.toDouble(),
-            child: AdWidget(
-              ad: controller._banner!,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: controller._banner!.size.height.toDouble(),
+              width: controller._banner!.size.width.toDouble(),
+              child: AdWidget(
+                ad: controller._banner!,
+              ),
             ),
           )
       ],

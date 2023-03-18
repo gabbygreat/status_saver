@@ -7,9 +7,9 @@ class HomeView extends StatelessView<HomeScreen, HomeController> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: StatusServices.getTabNames(),
-      builder: (context, AsyncSnapshot<List<String>> snapshot) {
+      builder: (context, AsyncSnapshot<List<FolderModel>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text('data');
+          return const Text('data');
         } else {
           return DefaultTabController(
             length: snapshot.data!.length,
@@ -38,18 +38,19 @@ class HomeView extends StatelessView<HomeScreen, HomeController> {
                   ),
                 ],
                 bottom: TabBar(
-                  isScrollable: true,
+                  // isScrollable: true,
                   tabs: snapshot.data!
                       .map((e) => Tab(
-                            text: e,
+                            text: e.folderName,
                           ))
                       .toList(),
                 ),
               ),
               body: TabBarView(
                 children: snapshot.data!
-                    .map((e) => InterstitialScreen(
-                          tabName: e.toLowerCase(),
+                    .map((e) => BannerScreen(
+                          folderModel: e,
+                          tabName: e.folderName.toLowerCase(),
                           position: snapshot.data!.indexOf(e),
                         ))
                     .toList(),

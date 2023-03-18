@@ -18,7 +18,7 @@ class HomeController extends ConsumerState<HomeScreen> {
         await Permission.manageExternalStorage.request().isGranted) {
       // some useful code
     } else {
-      print("No Permission Granted");
+      debugPrint("No Permission Granted");
     }
   }
 

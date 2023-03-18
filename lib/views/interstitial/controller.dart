@@ -2,20 +2,14 @@ import '../../utils/utils.dart';
 
 part 'view.dart';
 
-class InterstitialScreen extends StatefulWidget {
-  final String tabName;
-  final int position;
-  const InterstitialScreen({
-    Key? key,
-    required this.tabName,
-    required this.position,
-  }) : super(key: key);
+class InterstitialScreen extends ConsumerStatefulWidget {
+  const InterstitialScreen({Key? key}) : super(key: key);
 
   @override
-  State<InterstitialScreen> createState() => InterstitialController();
+  ConsumerState<InterstitialScreen> createState() => InterstitialController();
 }
 
-class InterstitialController extends State<InterstitialScreen> {
+class InterstitialController extends ConsumerState<InterstitialScreen> {
   InterstitialAd? _interstitialAd;
 
   /// Loads an interstitial ad.
@@ -59,15 +53,9 @@ class InterstitialController extends State<InterstitialScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // loadAd();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    StatusServices.getTabContent(widget.position);
-
+    // StatusServices.getTabContent(widget.position);
+    loadAd();
     return InterstitialView(this);
   }
 }
