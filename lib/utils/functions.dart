@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:share_plus/share_plus.dart';
 
 import '../utils/utils.dart';
@@ -45,4 +47,19 @@ Future<void> shareFile(FileModel fileModel) async {
     [XFile(fileModel.filePath)],
     text: 'Share media',
   );
+}
+
+Future<Size> calculateImageDimension(String file) {
+  Completer<Size> completer = Completer();
+  Image image = Image.file(File(file));
+  image.image.resolve(const ImageConfiguration()).addListener(
+    ImageStreamListener(
+      (ImageInfo image, bool synchronousCall) {
+        var myImage = image.image;
+        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+        completer.complete(size);
+      },
+    ),
+  );
+  return completer.future;
 }

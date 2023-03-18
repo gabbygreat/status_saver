@@ -11,3 +11,5 @@ final statusMediaProvider = FutureProvider.family<List<FileModel>, FolderModel>(
 final imageFromVideoProvider = FutureProvider.family(
   (ref, String filePath) => getImageFromVideo(filePath),
 );
+
+final rebuildDisplay = StateProvider.autoDispose<bool>((ref) => false);

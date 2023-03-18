@@ -3,7 +3,6 @@ import '../utils/utils.dart';
 class StatusServices {
   static Future<List<FolderModel>> getTabNames() async {
     var path = await ExternalPath.getExternalStorageDirectories();
-
     List<FileSystemEntity> dir = Directory('${path[0]}/Android/media')
         .listSync()
         .where((element) => element.path.contains('whatsapp'))
@@ -29,6 +28,8 @@ class StatusServices {
       return FileModel(
         filePath: e.path,
         fileType: lookupMimeType(e.path)!.split('/')[0],
+        height: 1,
+        width: 1,
         fileDate: e.statSync().modified,
       );
     }).toList();

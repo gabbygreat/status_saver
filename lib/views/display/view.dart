@@ -24,7 +24,7 @@ class DisplayView extends StatelessView<DisplayScreen, DisplayController> {
                     File(widget.fileModel[index].filePath),
                   )
                 : VideoManager(
-                    file: widget.fileModel[index].filePath,
+                    file: widget.fileModel[index],
                   ),
       ),
     );
