@@ -1,11 +1,10 @@
-
 import '../../utils/utils.dart';
 
 part 'view.dart';
 
 class DrawerScreen extends ConsumerStatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  
+
   const DrawerScreen({
     Key? key,
     required this.scaffoldKey,
@@ -32,6 +31,15 @@ class DrawerController extends ConsumerState<DrawerScreen> {
       MaterialPageRoute(
         builder: (context) => const SettingsScreen(),
       ),
+    );
+  }
+
+  Future<void> launchApps(String url,
+      {LaunchMode mode = LaunchMode.platformDefault}) async {
+    widget.scaffoldKey.currentState?.closeDrawer();
+    await launchUrlString(
+      url,
+      mode: mode,
     );
   }
 

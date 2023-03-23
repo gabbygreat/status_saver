@@ -18,7 +18,8 @@ class BannerScreen extends ConsumerStatefulWidget {
 
 class BannerController extends ConsumerState<BannerScreen> {
   BannerAd? _banner;
-  _createBannerAd() {
+
+  void _createBannerAd() async {
     _banner = BannerAd(
       size: AdSize.fullBanner,
       adUnitId: AdMobService.bannerAdUnitId,
@@ -26,7 +27,9 @@ class BannerController extends ConsumerState<BannerScreen> {
       request: const AdRequest(),
     );
     if (_banner != null) {
-      _banner!.load();
+      try {
+        await _banner?.load();
+      } catch (_) {}
     }
   }
 

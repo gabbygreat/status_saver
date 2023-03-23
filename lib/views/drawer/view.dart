@@ -92,8 +92,9 @@ class DrawerView extends StatelessView<DrawerScreen, DrawerController> {
                   leading: Icon(
                     Platform.isAndroid ? Icons.android : Icons.apple,
                   ),
-                  onTap: () => launchUrlString(
+                  onTap: () => controller.launchApps(
                     'https://play.google.com/store/apps/details?id=com.pycify.igboapp',
+                    mode: LaunchMode.externalApplication,
                   ),
                 ),
                 ListTile(
@@ -101,8 +102,9 @@ class DrawerView extends StatelessView<DrawerScreen, DrawerController> {
                   leading: Icon(
                     Platform.isAndroid ? Icons.android : Icons.apple,
                   ),
-                  onTap: () => launchUrlString(
+                  onTap: () => controller.launchApps(
                     'https://play.google.com/store/apps/details?id=com.pycify.calendar',
+                    mode: LaunchMode.externalApplication,
                   ),
                 ),
                 ListTile(
@@ -110,8 +112,9 @@ class DrawerView extends StatelessView<DrawerScreen, DrawerController> {
                   leading: Icon(
                     Platform.isAndroid ? Icons.android : Icons.apple,
                   ),
-                  onTap: () => launchUrlString(
+                  onTap: () => controller.launchApps(
                     'https://play.google.com/store/apps/details?id=com.pycify.math_quiz',
+                    mode: LaunchMode.externalApplication,
                   ),
                 ),
               ],

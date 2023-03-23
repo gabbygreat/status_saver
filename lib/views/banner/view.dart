@@ -15,24 +15,31 @@ class BannerView extends StatelessView<BannerScreen, BannerController> {
           child: statusMedia.when(
             data: (data) {
               data.sort((b, a) => a.fileDate.compareTo(b.fileDate));
-              return RefreshIndicator(
-                onRefresh: () async => await controller.ref.refresh(
-                  statusMediaProvider(widget.folderModel).future,
-                ),
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: data.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                  ),
-                  itemBuilder: (context, index) => ImageLoader(
-                    fileModel: data[index],
-                    allFiles: data,
-                  ),
-                ),
-              );
+              return data.isEmpty
+                  ? Center(
+                      child: Image.asset(
+                        'assets/png/empty.png',
+                      ),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () async => await controller.ref.refresh(
+                        statusMediaProvider(widget.folderModel).future,
+                      ),
+                      child: GridView.builder(
+                        padding: const EdgeInsets.all(10),
+                        itemCount: data.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                        ),
+                        itemBuilder: (context, index) => ImageLoader(
+                          fileModel: data[index],
+                          allFiles: data,
+                        ),
+                      ),
+                    );
             },
             loading: () => SizedBox(
               height: 40,
@@ -53,7 +60,7 @@ class BannerView extends StatelessView<BannerScreen, BannerController> {
               ),
             ),
             error: (error, stackTrace) {
-              return const Scaffold(body: Center());
+              return const Scaffold(body: Text('Erro'));
             },
           ),
         ),

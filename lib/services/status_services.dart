@@ -24,6 +24,7 @@ class StatusServices {
     final dir = Directory(
             '${path[0]}/Android/media/${folder.folderId}/${folder.folderMain}/Media/.Statuses/')
         .list();
+    
     return dir.where((event) => lookupMimeType(event.path) != null).map((e) {
       return FileModel(
         filePath: e.path,

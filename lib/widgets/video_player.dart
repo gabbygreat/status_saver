@@ -24,7 +24,6 @@ class _VideoManagerState extends ConsumerState<VideoManager> {
     )..initialize().then(
         (value) async {
           setState(() {});
-          ref.read(rebuildDisplay.notifier).state = true;
         },
       );
 
@@ -38,7 +37,6 @@ class _VideoManagerState extends ConsumerState<VideoManager> {
   @override
   void dispose() {
     super.dispose();
-    ref.read(rebuildDisplay.notifier).state = false;
     controller.dispose();
   }
 

@@ -5,24 +5,41 @@ import 'package:share_plus/share_plus.dart';
 import '../utils/utils.dart';
 
 Future<Uint8List> getImageFromVideo(String filePath) async {
-  final uint8list = await VideoThumbnail.thumbnailData(
+  final unit8list = await VideoThumbnail.thumbnailData(
     video: filePath,
     imageFormat: ImageFormat.PNG,
     maxWidth: 128,
     quality: 25,
   );
-  return uint8list!;
+  return unit8list!;
 }
 
 Future<bool> requestPermission() async {
-  if (await Permission.storage.request().isGranted &&
-      await Permission.accessMediaLocation.request().isGranted &&
-      await Permission.manageExternalStorage.request().isGranted) {
+  bool storagePermission = await Permission.storage.isGranted;
+  bool mediaPermission = await Permission.accessMediaLocation.isGranted;
+
+  if (!storagePermission) {
+    storagePermission = await Permission.storage.request().isGranted;
+  }
+
+  if (!mediaPermission) {
+    mediaPermission = await Permission.accessMediaLocation.request().isGranted;
+  }
+
+  bool isPermissionGranted = storagePermission && mediaPermission;
+
+  if (isPermissionGranted) {
     return true;
   } else {
-    await Permission.manageExternalStorage.request();
     return false;
   }
+}
+
+Future<void> requestFolderAccess() async {
+  const platform = MethodChannel('samples.flutter.dev/battery');
+  try {
+    await platform.invokeMethod('permission');
+  } on PlatformException catch (_) {}
 }
 
 Future<File> downloadFile(FileModel fileModel) async {
@@ -47,19 +64,4 @@ Future<void> shareFile(FileModel fileModel) async {
     [XFile(fileModel.filePath)],
     text: 'Share media',
   );
-}
-
-Future<Size> calculateImageDimension(String file) {
-  Completer<Size> completer = Completer();
-  Image image = Image.file(File(file));
-  image.image.resolve(const ImageConfiguration()).addListener(
-    ImageStreamListener(
-      (ImageInfo image, bool synchronousCall) {
-        var myImage = image.image;
-        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
-        completer.complete(size);
-      },
-    ),
-  );
-  return completer.future;
 }

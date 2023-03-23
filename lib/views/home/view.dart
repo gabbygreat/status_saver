@@ -58,24 +58,32 @@ class HomeView extends StatelessView<HomeScreen, HomeController> {
                     ),
                   ),
                 ],
-                bottom: TabBar(
-                  // isScrollable: true,
-                  tabs: snapshot.data!
-                      .map((e) => Tab(
-                            text: e.folderName,
-                          ))
-                      .toList(),
-                ),
+                bottom: snapshot.data!.isEmpty
+                    ? null
+                    : TabBar(
+                        // isScrollable: true,
+                        tabs: snapshot.data!
+                            .map((e) => Tab(
+                                  text: e.folderName,
+                                ))
+                            .toList(),
+                      ),
               ),
-              body: TabBarView(
-                children: snapshot.data!
-                    .map((e) => BannerScreen(
-                          folderModel: e,
-                          tabName: e.folderName.toLowerCase(),
-                          position: snapshot.data!.indexOf(e),
-                        ))
-                    .toList(),
-              ),
+              body: snapshot.data!.isEmpty
+                  ? Center(
+                      child: Image.asset(
+                        'assets/png/empty.png',
+                      ),
+                    )
+                  : TabBarView(
+                      children: snapshot.data!
+                          .map((e) => BannerScreen(
+                                folderModel: e,
+                                tabName: e.folderName.toLowerCase(),
+                                position: snapshot.data!.indexOf(e),
+                              ))
+                          .toList(),
+                    ),
             ),
           );
         }

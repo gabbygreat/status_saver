@@ -28,7 +28,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       themeMode: theme ? ThemeMode.light : ThemeMode.dark,
       theme: AppTheme.themeData(theme),
       darkTheme: AppTheme.themeData(theme),
-      home: const HomeScreen(),
+      home: const PermissionScreen(),
     );
   }
 }
