@@ -34,24 +34,6 @@ class BannerController extends ConsumerState<BannerScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    request();
-  }
-
-  void request() async {
-    await requestPermission().then(
-      (value) async {
-        if (value) {
-          return await ref.refresh(
-            statusMediaProvider(widget.folderModel).future,
-          );
-        }
-      },
-    );
-  }
-
-  @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     _createBannerAd();

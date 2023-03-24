@@ -70,14 +70,27 @@ class PermissionController extends ConsumerState<PermissionScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          // Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          // print('EXIT APP');
                         },
                         child: const Text('Exit'),
                       ),
                       TextButton(
                         onPressed: () async {
                           Navigator.of(context).pop();
-                          await requestPermission();
+                          requestPermission().then((value) async {
+                            if (value) {
+                              await Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const GrantFolderScreen(),
+                                ),
+                                (route) => false,
+                              );
+                            } else {
+                              // print('EXIT APP');
+                            }
+                          });
                         },
                         child: const Text('Grant'),
                       )

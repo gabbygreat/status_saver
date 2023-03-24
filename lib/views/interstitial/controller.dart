@@ -54,8 +54,15 @@ class InterstitialController extends ConsumerState<InterstitialScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      loadAd();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // StatusServices.getTabContent(widget.position);
     return InterstitialView(this);
   }
 }

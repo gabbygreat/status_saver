@@ -1,11 +1,28 @@
 import 'utils/utils.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final showPermission = await LocalStorage.getPermission();
+  const permission = false;
+
+  runApp(
+    ProviderScope(
+      child: MyApp(
+        showPermission: showPermission,
+        permission: permission,
+      ),
+    ),
+  );
 }
 
 class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool? showPermission;
+  final bool permission;
+  const MyApp({
+    Key? key,
+    required this.showPermission,
+    required this.permission,
+  }) : super(key: key);
 
   @override
   ConsumerState<MyApp> createState() => _MyAppState();
@@ -28,7 +45,13 @@ class _MyAppState extends ConsumerState<MyApp> {
       themeMode: theme ? ThemeMode.light : ThemeMode.dark,
       theme: AppTheme.themeData(theme),
       darkTheme: AppTheme.themeData(theme),
-      home: const PermissionScreen(),
+      home: widget.showPermission == null
+          ? const PermissionScreen()
+          : widget.permission
+              ? const InterstitialScreen(
+                  child: GrantFolderScreen(),
+                )
+              : const HomeScreen(),
     );
   }
 }

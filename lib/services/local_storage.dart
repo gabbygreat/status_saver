@@ -6,6 +6,7 @@ class LocalStorage {
   LocalStorage._init();
 
   static String isDarkMode = 'isDarkMode';
+  static String hasPermission = 'hasPermission';
 
   Future<SharedPreferences> get prefs async {
     if (_prefs != null) return _prefs!;
@@ -20,8 +21,18 @@ class LocalStorage {
     return pref.getBool(isDarkMode);
   }
 
-  static setDarkMode(bool value) async {
+  static Future<bool> setDarkMode(bool value) async {
     final pref = await instance.prefs;
     return pref.setBool(isDarkMode, value);
+  }
+
+  static Future<bool?> getPermission() async {
+    final pref = await instance.prefs;
+    return pref.getBool(hasPermission);
+  }
+
+  static Future<bool> setPermission(bool value) async {
+    final pref = await instance.prefs;
+    return pref.setBool(hasPermission, value);
   }
 }

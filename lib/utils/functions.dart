@@ -27,19 +27,18 @@ Future<bool> requestPermission() async {
   }
 
   bool isPermissionGranted = storagePermission && mediaPermission;
-
-  if (isPermissionGranted) {
-    return true;
-  } else {
-    return false;
-  }
+  await LocalStorage.setPermission(isPermissionGranted);
+  return isPermissionGranted;
 }
 
 Future<void> requestFolderAccess() async {
   const platform = MethodChannel('samples.flutter.dev/battery');
   try {
     await platform.invokeMethod('permission');
-  } on PlatformException catch (_) {}
+    return;
+  } on PlatformException catch (_) {
+    return;
+  }
 }
 
 Future<File> downloadFile(FileModel fileModel) async {
